@@ -1,0 +1,47 @@
+#include <stdio.h>
+#define P 5
+#define R 3
+
+int main() {
+    int alloc[P][R] = {{0, 1, 0}, {2, 0, 0}, {3, 0, 2}, {2, 1, 1}, {0, 0, 2}};
+    int max[P][R] = {{7, 5, 3}, {3, 2, 2}, {9, 0, 2}, {2, 2, 2}, {4, 3, 3}};
+    int avail[R] = {3, 3, 2};
+    int f[P], ans[P], ind = 0;
+    int need[P][R];
+
+    for (int i = 0; i < P; i++) f[i] = 0;
+    for (int i = 0; i < P; i++)
+        for (int j = 0; j < R; j++)
+            need[i][j] = max[i][j] - alloc[i][j];
+
+    for (int k = 0; k < P; k++) {
+        for (int i = 0; i < P; i++) {
+            if (f[i] == 0) {
+                int flag = 1;
+                for (int j = 0; j < R; j++)
+                    if (need[i][j] > avail[j]) flag = 0;
+
+                if (flag) {
+                    for (int j = 0; j < R; j++)
+                        avail[j] += alloc[i][j];
+                    ans[ind++] = i;
+                    f[i] = 1;
+                }
+            }
+        }
+    }
+
+    int safe = 1;
+    for (int i = 0; i < P; i++)
+        if (!f[i]) safe = 0;
+
+    if (safe) {
+        printf("Safe sequence: ");
+        for (int i = 0; i < P; i++)
+            printf("P%d ", ans[i]);
+    } else {
+        printf("System is not in safe state.\n");
+    }
+
+    return 0;
+}
