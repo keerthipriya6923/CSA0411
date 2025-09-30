@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <string.h>
+
+int main() {
+    int shmid;
+    char *str;
+
+    shmid = shmget(IPC_PRIVATE, 1024, IPC_CREAT | 0666);
+    str = (char*) shmat(shmid, NULL, 0);
+
+    printf("Write Data to Shared Memory: ");
+    fgets(str, 100, stdin);
+
+    printf("Data Written: %s\n", str);
+    shmdt(str);
+    shmctl(shmid, IPC_RMID, NULL);
+
+    return 0;
+}
