@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+#define MAX 10
+
+struct Process {
+    int id;
+    int arrival;
+    int burst;
+    int remaining;
+    int priority;
+    int completion;
+    int waiting;
+    int turnaround;
+    int started;
+};
+
+int main() {
+    struct Process p[MAX];
+    int n, time = 0, completed = 0, i;
+    int shortest = -1, highestPriority = 999;
+    
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    // Input
+    for(i = 0; i < n; i++) {
+        p[i].id = i + 1;
+        printf("Enter Arrival Time, Burst Time and Priority (lower = higher priority) for P%d: ", i + 1);
+        scanf("%d%d%d", &p[i].arrival, &p[i].burst, &p[i].priority);
+        p[i].remaining = p[i].burst;
+        p[i].started = 0;
+    }
+
+    printf("\nGantt Chart:\n");
+
+    // Preemptive Priority Scheduling
+    while(completed != n) {
+        shortest = -1;
+        highestPriority = 999;
+
+        for(i = 0; i < n; i++) {
+            if(p[i].arrival <= time && p[i].remaining > 0 && p[i].priority < highestPriority) {
+                highestPriority = p[i].priority;
