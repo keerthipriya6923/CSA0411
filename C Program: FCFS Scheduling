@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+struct Process {
+    int pid;            // Process ID
+    int burst_time;     // CPU Burst Time
+    int completion_time;
+    int turnaround_time;
+    int waiting_time;
+};
+
+int main() {
+    int n, i;
+    struct Process p[100];
+    
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+    
+    // Input burst time for each process
+    for (i = 0; i < n; i++) {
+        p[i].pid = i + 1; // Process IDs starting from 1
+        printf("Enter Burst Time for Process %d: ", p[i].pid);
+        scanf("%d", &p[i].burst_time);
+    }
+
+    // FCFS Scheduling Logic
+    int current_time = 0;
+    for (i = 0; i < n; i++) {
+        // Completion Time = current time + burst time
+        current_time += p[i].burst_time;
+        p[i].completion_time = current_time;
+
+        // Turnaround Time = Completion Time - Arrival Time (0)
+        p[i].turnaround_time = p[i].completion_time;
+
+        // Waiting Time = Turnaround Time - Burst Time
+        p[i].waiting_time = p[i].turnaround_time - p[i].burst_time;
+    }
+
+    // Display results
+    printf("\nFCFS Scheduling Results:\n");
+    printf("PID\tBurst Time\tCompletion Time\tTurnaround Time\tWaiting Time\n");
+    for (i = 0; i < n; i++) {
+        printf("%d\t%d\t\t%d\t\t%d\t\t%d\n", 
+            p[i].pid, 
+            p[i].burst_time, 
+            p[i].completion_time,
+            p[i].turnaround_time, 
+            p[i].waiting_time);
+    }
+
+    // Calculate average waiting and turnaround time
+    float total_wt = 0, total_tat = 0;
+    for (i = 0; i < n; i++) {
+        total_wt += p[i].waiting_t
