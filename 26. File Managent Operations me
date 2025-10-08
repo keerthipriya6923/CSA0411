@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    FILE *fp = fopen("file.txt", "w");
+    if (!fp) { perror("fopen"); return 1; }
+
+    fprintf(fp, "Writing to file\n");
+    fclose(fp);
+
+    fp = fopen("file.txt", "r");
+    char buffer[100];
+    fgets(buffer, sizeof(buffer), fp);
+    printf("Read: %s", buffer);
+    fclose(fp);
+
+    remove("file.txt");
+    printf("File deleted.\n");
+
+    return 0;
+}
